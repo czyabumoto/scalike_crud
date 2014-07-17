@@ -1,7 +1,56 @@
-@(message: String)
+@(message: String, campaigns: List[Campaign]) @main("Welcome to Play") {
 
-@main("Welcome to Play") {
+<!-- script -->
+<script type="text/javascript">
+	function edit(id, name, email) {
+		var form = document.forms[0];
+		form.action = '/edit';
+		form.id.value = id;
+		form.name.value = name;
+		form.email.value = email;
+		document.getElementById('commit').value = '編集';
+	}
+	
+	function del(id) {
+		location.href = '/delete/' + id;
+	};
+</script>
 
-    @play20.welcome(message)
-
+<!-- main form -->
+<!-- 
+<form action="/add" method="POST">
+	<h2>@message</h2>
+	<table border="0">
+	 <tr>
+	  <td>キャンペーンID</td>
+	  <td><input type="text" name="name" /></td>
+	 </tr>
+	 <tr>
+	  <td>キャンペーン名</td>
+	  <td><input type="text" name="email" /></td>
+	 </tr>
+	 <tr>
+	  <td>パスワード</td>
+	  <td><input type="password" name="password" /></td>
+	 </tr>
+	 <tr>
+	  <td colspan="2">
+		  <input type="submit" id="commit" value="追加" />
+	  </td>
+	 </tr>
+	</table>
+ -->
+	<hr/>
+	<h3>一覧</h3>
+	<ul>
+	@for(campaign <- campaigns) {
+		<li>
+			id=@campaign.campaign_id, name=@campaign.campaign_name, 日予算=@campaign.daily_budget, 合計予算=@campaign.total_budget, ステータス=@campaign.status
+			<input type="button" value="編集" onclick="" />
+			<input type="button" value="削除" onclick="del(@campaign.campaign_id)" />
+		</li>
+	}
+	</ul>
+	<input type="button" value="更新" onclick="location.href='/select'" />
+</form>
 }
